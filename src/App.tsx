@@ -4,6 +4,8 @@ import {BrowserRouter} from 'react-router-dom';
 import Navbar from './components/home/Navbar';
 import Login from './components/login/Login';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Company from './components/company/Company';
+import Customer from './components/customer/Customer'
 function App() {
   
   return (
@@ -11,6 +13,7 @@ function App() {
       <BrowserRouter>
         <Navbar/>
         <Login/>
+        <Company/>
       </BrowserRouter>
     </div>
   );
