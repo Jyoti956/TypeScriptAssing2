@@ -20,17 +20,16 @@ export default function Company(prop:IProduct) {
     const [rowData,setRowData]=useState([] as any)
 
     
-    const addProduct=()=>{
+    const addProduct=():void=>{
     newData.push({
                     name:name,
                     price:price
                 })
-    setNewData([...newData,products])
-
+    setNewData([...newData])
     console.log("newwwwwwdatttttttttt",newData);
-    // const merged = products.concat(newData);
-    // console.log(merged);
-    // setRowData([...merged]);
+    const merged = products.concat(newData);
+    console.log(merged);
+    setRowData([...merged]);
         
     }
     const columns = [
@@ -73,7 +72,7 @@ export default function Company(prop:IProduct) {
         </div>
             <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
                 <AgGridReact
-                    rowData={newData}
+                    rowData={rowData}
                     columnDefs={columns}
                     defaultColDef={defaultColDef}>
                 </AgGridReact>
