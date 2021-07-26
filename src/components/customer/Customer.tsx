@@ -38,4 +38,4 @@ import {useStyles} from './customerStyles';
     </Card>
   );
 }
-export default {Customer};
+export default Customer;

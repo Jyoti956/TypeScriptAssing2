@@ -1,85 +1,61 @@
-import React, { Component, FormEvent } from 'react';
+import React, { Component, FormEvent} from 'react';
 import './Login.css';
 import Button from '@material-ui/core/Button';
-import users from '../../users';
+import {users} from '../../users';
+import { withRouter } from 'react-router';
+import { UserModel } from '../../Models';
 
-interface State {
-    uname: string;
-    role: string;
-    email: string;
-    password: string;
-    userCreds: {}[];
+interface IState {
+    user: UserModel;
 }
 
-export default class Login extends Component<any, State> {
+
+class Login extends Component<any, IState> {
     constructor(props: any) {
         super(props);
-
         this.state = {
-            uname: "",
-            role: "",
-            email: "",
-            password: "",
-            userCreds: []
+            user: new UserModel(),
         }
     }
 
-    private handleSubmit = (e: FormEvent) => {
+    
+    private updateUser(key: string, value: string): void {
+        this.setState({
+            ...this.state,
+            user: new UserModel({ ...this.state.user, [key]: value })
+        });
+    }
+
+    private handleSubmit(e:FormEvent){
         e.preventDefault();
-        let userCreds = [...this.state.userCreds];
-        const data = {
-            uname: this.state.uname,
-            role: this.state.role,
-            email: this.state.email,
-            password: this.state.password
-        };
-        userCreds.push(data)
-        this.setState({ userCreds: [...userCreds]})
-        console.log(userCreds);
-
-        // if (data.uname == users[0].name) {
-        //     alert("hgfyjtyhgtc")
-        // }
-
-    };
-
+        
+    }
 
     render() {
         return (
             <div id="login">
                 <form onSubmit={this.handleSubmit}>
                     <h3>Login Here</h3>
-
-                    <div className="form-group">
-                        <label>Name</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            placeholder="First name"
-                            onChange={(e) => this.setState({ uname: e.target.value })}
-                            required />
-                    </div>
-
                     <div className="form-group col-md-13">
                         <label>Role</label>
                         <select
                             id="inputState"
                             className="form-control"
-                            onChange={(e) => this.setState({ role: e.target.value })}>
-                            <option selected>Choose...</option>
+                            onChange={({ target }) => this.updateUser('', target.value)}
+                        >
+                            <option value="Choose...">Choose...</option>
                             <option>Company</option>
                             <option>Admin</option>
                             <option>Customer</option>
                         </select>
                     </div>
-
                     <div className="form-group">
                         <label>Email address</label>
                         <input
                             type="email"
                             className="form-control"
                             placeholder="Enter email"
-                            onChange={(e) => this.setState({ email: e.target.value })}
+                            onChange={({ target }) => this.updateUser('', target.value)}
                             required />
                     </div>
 
@@ -89,7 +65,7 @@ export default class Login extends Component<any, State> {
                             type="password"
                             className="form-control"
                             placeholder="Enter password"
-                            onChange={(e) => this.setState({ password: e.target.value })}
+                            onChange={({ target }) => this.updateUser('', target.value)}
                             required />
                     </div>
 
@@ -108,3 +84,5 @@ export default class Login extends Component<any, State> {
         );
     }
 }
+
+export default withRouter(Login);

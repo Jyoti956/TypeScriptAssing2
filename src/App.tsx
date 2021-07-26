@@ -1,21 +1,22 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter} from 'react-router-dom';
-import Navbar from './components/home/Navbar';
-import Login from './components/login/Login';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+import Home from './components/home/Home';
 import Company from './components/company/Company';
-import Customer from './components/customer/Customer'
+import Customer from './components/customer/Customer';
+import Admin from './components/admin/Admin';
 function App() {
-  
+
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Navbar/>
-        <Login/>
-        <Company/>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        <Route path="/company" exact component={Company} />
+        <Route path="/admin" exact component={Admin} />
+        <Route path="/customer" exact component={Customer} />
+        <Route path="/*" exact component={Home} />
+      </Switch>
+    </BrowserRouter>
   );
 }
 

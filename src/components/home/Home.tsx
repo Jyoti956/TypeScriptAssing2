@@ -3,6 +3,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import {useStyles} from './homeStyles';
+import Login from '../login/Login';
 
 export default function Navbar() {
     const classes = useStyles();
@@ -15,9 +16,9 @@ return (
                     <Typography variant="h6" className={classes.title}>
                         WebCart
                     </Typography>
-                    
                 </Toolbar>
             </AppBar>
+            <Login/>
         </div>
     );
 }
