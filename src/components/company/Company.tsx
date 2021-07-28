@@ -24,13 +24,11 @@ export default function Company(props: IProduct) {
             name: name,
             price: price
         })
-
         setNewData([...newData])
         localStorage.setItem("newdata",JSON.stringify(newData))
         setRowData([...products, ...newData]);
-        
-        console.log(rowData, "rowwdataaaaaaaa");
-
+        setName("");
+        setPrice("");
     }
 
     const columns = [
@@ -41,13 +39,10 @@ export default function Company(props: IProduct) {
         {
             headerName: "Price", field: "price"
         },
-        {
-            headerName: "Status", field: "status"
-        }
     ];
     
     const defaultColDef = {
-        sortable: true, editable: true, filter: true, flex: 1
+        sortable: true, editable: true, filter: true,floatingFilter: true, flex: 1
     }
 
     return (
@@ -70,9 +65,9 @@ export default function Company(props: IProduct) {
                     onChange={(e) => setPrice(e.target.value)}
                 >
                 </input>
-                <button type="button" onClick={addProduct}>Add Product</button>
+                <button type="button" onClick={addProduct} id="addbtn">Add Product</button>
             </div>
-            <div className="ag-theme-alpine" style={{ height: 400, width: "100%" }}>
+            <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
                 <AgGridReact
                     rowData={rowData}
                     columnDefs={columns}

@@ -26,7 +26,13 @@ h1,h2,h3,h4,h5,h6,label,span {
   margin-top: 5%;
   
 }
+.form-group{
+  padding: 7px;
+}
 #login .simple-menu,h3{
   margin-left: 40%;
   margin-top: 20px;
+}
+#login h5{
+  color: red;
 }
