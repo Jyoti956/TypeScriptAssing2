@@ -1,108 +1,96 @@
+import egg from './images/egg.jpg';
+import asparagus from './images/asparagus.jpg';
+import banana from './images/banana.jpg';
+import beans from './images/beans.jpg';
+import bread from './images/bread.jpg';
+import breakfast from './images/breakfast.jpg';
+import cake from './images/cake.jpg';
+import capsicum from './images/capsicum.jpg';
+import hazel from './images/hazel.jpg';
+import legum from './images/legum.jpg';
+import lemon from './images/lemon.jpg';
+import pesto from './images/pesto.jpg';
+import smoothie from './images/smoothie.jpg';
+import strawberry from './images/strawberry.jpg';
+import tomato from './images/tomato.jpg';
+
+
 const products = [
     {
         "name": "Brown eggs",
-        
         "price": 28.1,
-        "product_id": 14
+        "product_id": 14,
+        "image":egg
     }, {
         "name": "Sweet fresh stawberry",
-        "type": "fruit",
-        "description": "Sweet fresh stawberry on the wooden table",
         "price": 29.45,
-        "product_id": 13
+        "product_id": 13,
+        "image":strawberry
     }, {
         "name": "Asparagus",
-        "type": "vegetable",
-        "description": "Asparagus with ham on the wooden table",
-
         "price": 18.95,
-        "product_id": 12
+        "product_id": 12,
+        "image":asparagus
     }, {
         "name": "Green smoothie",
-        "type": "dairy",
-        "description": "Glass of green smoothie with quail egg's yolk, served with cocktail tube, green apple and baby spinach leaves over tin surface.",
-
         "price": 17.68,
-        "product_id": 11
+        "product_id": 11,
+        "image":smoothie
     }, {
         "name": "Raw legums",
-        "type": "vegetable",
-        "description": "Raw legums on the wooden table",
-
         "price": 17.11,
-        "product_id": 10
+        "product_id": 10,
+        "image":legum
     }, {
         "name": "Baking cake",
-        "type": "dairy",
-        "description": "Baking cake in rural kitchen - dough  recipe ingredients (eggs, flour, sugar) on vintage wooden table from above.",
-
         "price": 11.14,
-        "product_id": 9
+        "product_id": 9,
+        "image":cake
     }, {
         "name": "Pesto with basil",
-        "type": "vegetable",
-        "description": "Italian traditional pesto with basil, chesse and oil",
-
         "price": 18.19,
-        "product_id": 8
+        "product_id": 8,
+        "image":pesto
     }, {
-        "name": "Hazelnut in black ceramic bowl",
-        "type": "vegetable",
-        "description": "Hazelnut in black ceramic bowl on old wooden background. forest wealth. rustic style. selective focus",
-
+        "name": "Hazelnut",
         "price": 27.35,
-        "product_id": 7
+        "product_id": 7,
+        "image":hazel
     }, {
-        "name": "Fresh stawberry",
-        "type": "fruit",
-        "description": "Sweet fresh stawberry on the wooden table",
-
+        "name": "Banana",
         "price": 28.59,
-        "product_id": 6
+        "product_id": 6,
+        "image":banana
     }, {
-        "name": "Lemon and salt",
-        "type": "fruit",
-        "description": "Rosemary, lemon and salt on the table",
-
+        "name": "Lemon",
         "price": 15.79,
-        "product_id": 5
+        "product_id": 5,
+        "image":lemon
     }, {
         "name": "Homemade bread",
-        "type": "bakery",
-        "description": "Homemade bread",
-
         "price": 17.48,
-        "product_id": 4
+        "product_id": 4,
+        "image":bread
     }, {
-        "name": "Legums",
-        "type": "vegetable",
-        "description": "Cooked legums on the wooden table",
-        "filename": "11.jpg",
-        "height": 600,
-        "width": 399,
+        "name": "Capsicum",
         "price": 14.77,
-        "product_id": 0
+        "product_id": 0,
+        "image":capsicum
     }, {
         "name": "Fresh tomato",
-        "type": "vegetable",
-        "description": "Fresh tomato juice with basil",
-
         "price": 16.3,
-        "product_id": 3
+        "product_id": 3,
+        "image":tomato
     }, {
         "name": "Healthy breakfast",
-        "type": "fruit",
-        "description": "Healthy breakfast set. rice cereal or porridge with berries and honey over rustic wood background",
-
         "price": 13.02,
-        "product_id": 2
+        "product_id": 2,
+        "image":breakfast
     }, {
         "name": "Green beans",
-        "type": "vegetable",
-        "description": "Raw organic green beans ready to eat",
-
         "price": 28.79,
-        "product_id": 1
+        "product_id": 1,
+        "image":beans
     }
 ];
 export default products;

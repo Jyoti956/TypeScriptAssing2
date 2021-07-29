@@ -15,14 +15,14 @@ class Form2 extends Component<any, IState> {
     private updateUser = (key: string, value: string):void => {
         
         this.setState({
-                
+                ...this.state,
                 user: new UserModel(),
                 [key]:value
             });
     }
 
 
-    private handleSubmit = ():void => {
+    private handleSubmit = (e:any):void => {
         console.log(this.state.user);
     }
 

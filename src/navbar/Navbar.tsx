@@ -2,24 +2,23 @@ import React from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import {useStyles} from './loginStyles';
-import Form2 from '../form/Form2';
+import { useStyles } from './Navbar.Styles';
 
-export default function Login() {
+
+function Navbar(){
     const classes = useStyles();
-    
-
-return (
+    return(
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        WebCart
+                    <Typography 
+                    variant="h6" 
+                    className={classes.title}>
+                    WebCart
                     </Typography>
                 </Toolbar>
             </AppBar>
-            <Form2/>
         </div>
     );
-}
-
+};
+export default Navbar;

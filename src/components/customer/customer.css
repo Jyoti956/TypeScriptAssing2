@@ -1,0 +1,7 @@
+#products{
+        
+        text-align: center;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 10px;
+}

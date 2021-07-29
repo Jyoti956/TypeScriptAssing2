@@ -20,17 +20,14 @@ class Form2 extends Component<any, IState> {
     }
 
 
-    private handleSubmit = (e: FormEvent) => {
-        e.preventDefault();
-        
+    private handleLogin = () => {
         console.log(this.state.user);
-        
     }
 
     render() {
         return (
             <div id="login">
-                <form onSubmit={this.handleSubmit}>
+                
                     <h3>Login Here</h3>
                     {/* <h5>{this.state.errorMsg}</h5> */}
                     <div>
@@ -67,12 +64,12 @@ class Form2 extends Component<any, IState> {
                         variant="contained"
                         color="primary"
                         aria-haspopup="true"
-                        type="submit"
+                        onClick={this.handleLogin}
                     >
                         Login
                     </Button>
 
-                </form>
+                
             </div>
         );
     }
