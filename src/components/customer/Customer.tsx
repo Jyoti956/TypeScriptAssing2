@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -9,18 +9,30 @@ import Typography from '@material-ui/core/Typography';
 import { useStyles } from './Customer.Styles';
 import '../customer/customer.css';
 import Navbar from '../../navbar/Navbar';
+import products from '../../products';
 
 
 function Customer() {
-  
   const classes = useStyles();
-  const allProducts = JSON.parse(localStorage.getItem("rowdata") || '{}');
+  const [cartItems,setCartItems]=useState([]);
+
+  const allProducts = JSON.parse(localStorage.getItem("newproducts") || '{}');
   console.log(allProducts);
+
+  const addToCart=(product:any)=>{
+    const result=allProducts.find((item:any)=>item.id===product.id)
+    console.log(result);
+    
+    if(result){
+      setCartItems(result);
+      console.log(cartItems,"cartItems are")
+    }
+  }
     return (
       <div id="customer">
         <Navbar/>
         <div id="products">
-          {allProducts.map((product: any) => {
+          {allProducts.map((product:any) => {
               return <Card className={classes.root}>
                         <CardActionArea>
                           
@@ -47,7 +59,8 @@ function Customer() {
                       <CardActions>
                         <Button
                         size="small"
-                        color="secondary">
+                        color="secondary"
+                        onClick={()=>addToCart(product)}>
                         Add to Cart
                         </Button>
                       </CardActions>

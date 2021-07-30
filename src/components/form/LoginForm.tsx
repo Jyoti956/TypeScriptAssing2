@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button';
 import { users } from '../../users';
 import { withRouter } from 'react-router-dom';
 
-
 interface IState {
+    role:string;
     email: string;
     password: string;
     errorMsg: string;
@@ -15,35 +15,45 @@ class LoginForm extends Component<any, IState> {
     constructor(props: any) {
         super(props);
         this.state = {
+            role:"",
             email: "",
             password: "",
             errorMsg: '',
         }
     }
 
-
-    private handleLogin = () => {
-        if (this.state.email === users[0].email) {
+private handleLogin = () => {
+        if (this.state.role===users[0].role && this.state.email === users[0].email) {
             this.props.history.push("/company");
         }
-
-        if (this.state.email === users[1].email) {
+        if (this.state.role===users[1].role && this.state.email === users[1].email) {
             this.props.history.push("/admin");
         }
-        if (this.state.email === users[2].email) {
+        if (this.state.role===users[2].role && this.state.email === users[2].email) {
             this.props.history.push("/customer");
         }
         else {
-            this.setState({ errorMsg: "*************Invalid Credentials" });
+            this.setState({ errorMsg: "*************Invalid Credentials" })
         }
     }
 
-    render() {
+render() {
         return (
             <div id="login">
 
                 <h3>Login Here</h3>
                 <h5>{this.state.errorMsg}</h5>
+                <div className="form-group">
+                    <label>Role</label>
+                        <select className="form-group col-md-12" 
+                                onChange={(e) => this.setState({ role: e.target.value })}
+                        >
+                            <option selected>Choose...</option>
+                            <option>Company</option>
+                            <option>Admin</option>
+                            <option>Customer</option>
+                        </select>
+                </div>
                 <div className="form-group">
                     <label>Email address</label>
                     <input
