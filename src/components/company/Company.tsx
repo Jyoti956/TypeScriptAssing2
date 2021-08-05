@@ -1,76 +1,74 @@
-import React, { useState,useEffect } from 'react'
-import products from '../../products';
+import React, { useState, useEffect } from 'react'
 import './company.css'
-import  {CustomAgGrid}  from '../../Shared/AgGridReact';
+import { CustomAgGrid } from '../../Shared/AgGridReact';
 
 export interface IProduct {
     name: string;
     price: string;
-    id:number;
-    approved:boolean;
-    products: {}[];
-    newData: {}[];
+    id: string;
+    approved: boolean;
+    status: "approved" | "pending" | "rejected";
 }
 
-export default function Company(props: IProduct) {
+export default function Company() {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
-    const [id,setId]=useState(0)
-    const [newProducts, setNewProducts] = useState([] as any);
-    
+    const [id, setId] = useState("");
+    const [items, setItems] = useState(
+        JSON.parse(localStorage.getItem('newItems') ||
+            '{}') || [] as IProduct[]);
+    const [itemStatus, setItemStatus] = useState(null)
 
-    useEffect(() => {
-        const localData = JSON.parse(localStorage.getItem('newproducts')||"{}");
-        if (localData ) {
-            setNewProducts(localData);
-        }
-    }, []);
+    // useEffect(() => {
+    //     const localData = JSON.parse(localStorage.getItem('newItems') || "{}");
+    //     if (localData) {
+    //        setItems(localData)
+    //     }
+    // }, []);
 
-
-    const addProduct = (): void => {
-        newProducts.push({
-            name: name,
-            price: price,
-            id:id,
-            isapproved:false
-        });
-        setNewProducts([...newProducts])
-        localStorage.setItem("newproducts", JSON.stringify(newProducts))
+    const addItems = () => {
+        items.push({ name, price, id, approved: false, status: 'pending' });
+        setItems([...items]);
+        console.log(items, "items are");
+        localStorage.setItem("newItems", JSON.stringify(items));
         setName("");
         setPrice("");
+        setId("");
+    };
+
+    const gridOptions = {
+        columnDefs: [
+            {
+                headerName: "Name",
+                field: "name"
+            },
+            {
+                headerName: "Price",
+                field: "price"
+            },
+            {
+                headerName: "Id",
+                field: "id"
+            },
+            {
+                headerName: "Status",
+                field: "status"
+            },
+        ],
+        defaultColDef: {
+            sortable: true,
+            editable: true,
+            filter: true,
+            floatingFilter: true,
+            flex: 1
         }
+    };
 
-    const columns = [
-        {
-            headerName: "Name",
-            field: "name"
-        },
-        {
-            headerName: "Price",
-            field: "price"
-        },
-        {
-            headerName: "Id",
-            field: "id"
-        },
-        {
-            headerName: "Status",
-            field: "status"
-        },
-    ];
-
-    const defaultColDef = {
-        sortable: true, 
-        editable: true, 
-        filter: true, 
-        floatingFilter: true, 
-        flex:1
-    }
 
     return (
         <div id="company">
-             <h1>Company Dashboard</h1>
-             <h3>Add Products:</h3>
+            <h1>Company Dashboard</h1>
+            <h3>Add Products:</h3>
             <div id="company_inputs">
 
                 Product Name:
@@ -90,15 +88,17 @@ export default function Company(props: IProduct) {
                 Product Id:
                 <input type="number"
                     value={id}
-                    onChange={(e) => setId(parseInt(e.target.value))}
+                    onChange={(e) => setId(e.target.value)}
                 >
                 </input>
 
-                <button type="button" onClick={addProduct} id="addbtn">Add Product</button>
+                <button type="button" onClick={addItems} id="addbtn">Add Product</button>
             </div>
 
             <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
-            <CustomAgGrid rowData={newProducts} columnDefs={columns} defaultColDef={defaultColDef}/>
+                <CustomAgGrid
+                    rowData={items}
+                    gridOptions={gridOptions} />
             </div>
 
         </div>

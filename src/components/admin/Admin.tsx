@@ -1,66 +1,87 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './admin.css'
 import { CustomAgGrid } from '../../Shared/AgGridReact';
+import BtnCellRenderer from './BtnCellRenderer';
+import { RowNode } from 'ag-grid-community';
 
+export interface AProps {
+    clicked: Function;
+    value: number;
+}
 
-export default function Admin() {
-    const[data,setData]=useState([]);
-
+export default function Admin(props: AProps) {
+    const [data, setData] = useState([]);
+    const [approvedItems, setApprovedItems] = useState([] as any);
+    let gridApi: any = null;
 
     useEffect(() => {
-        const newProducts = JSON.parse(localStorage.getItem("newproducts") || '{}');
-        if (newProducts) {
-            return setData(newProducts)
+        const newItems = JSON.parse(localStorage.getItem("newItems") || '{}');
+        if (newItems) {
+            return setData(newItems)
         }
         return alert("New products are not added yet!!");
     }, []);
 
-
-    const approve = (product:any) => {
-        const approvedItem = data.find((item: any) => item.id === product.id);
-        console.log(approvedItem);
-        //approvedItem.approved = true;
-    }
-
-    const reject = (product: any) => {
-        const approvedItem = data.find((item: any) => item.index === product.index);
-        console.log(approvedItem);
-    }
-
-    const columns = [
-        {
-            headerName: "Name",
-            field: "name"
+    const gridOptions = {
+        onGridReady: (params: any) => {
+            gridApi = params.api
+            console.log(gridApi, "&&&&&&&&&&&&&")
         },
-        {
-            headerName: "Price",
-            field: "price"
+
+        columnDefs: [
+            {
+                headerName: "Name",
+                field: "name"
+            },
+            {
+                headerName: "Price",
+                field: "price"
+            },
+            {
+                headerName: "Actions",
+                field: "id",
+                cellRenderer: 'btnCellRenderer',
+                cellRendererParams: {
+                    clicked: function (field: RowNode) {
+                        const value = field;
+                        alert("Do you really want to approve item number: " + value);
+                    }
+                }
+            },
+        ],
+
+        frameworkComponents: {
+            btnCellRenderer: BtnCellRenderer
         },
-        {
-            headerName: "Actions",
-            field: "id",
-            cellRendererFramework: () =>
-                <div>
-                    <button className="button btn-primary" onClick={approve}>
-                        Approve
-                                </button>
-                    <button className="button btn-primary" onClick={reject}>
-                        Reject
-                                </button>
-                </div>
-        }
-    ];
-    const defaultColDef = {
-        sortable: true,
-        editable: true,
-        filter: true,
-        flex: 1
+
+        defaultColDef: {
+            sortable: true,
+            editable: true,
+            filter: true,
+            flex: 1
+        },
+
+        onCellClicked: (event: any) => console.log("current Rowindex is...", event.rowIndex),
+        rowSelection: 'single',
+        onSelectionChanged: approved,
+    };
+
+    function approved() {
+        const selRows = gridApi.getSelectedRows();
+        console.log(selRows[0], "selected row data...");
+        approvedItems.push(selRows[0]);
+        setApprovedItems(approvedItems)
+        localStorage.setItem("approvedItems", JSON.stringify(approvedItems))
+        gridApi.applyTransaction({ remove: selRows });
     }
+
     return (
         <div id="admin">
             <h1>Admin Dashboard</h1>
             <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
-                <CustomAgGrid rowData={data} columnDefs={columns} defaultColDef={defaultColDef} />
+                <CustomAgGrid
+                    rowData={data}
+                    gridOptions={gridOptions} />
             </div>
         </div>
     );
