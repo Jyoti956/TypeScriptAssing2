@@ -5,3 +5,7 @@
         flex-wrap: wrap;
         padding: 10px;
 }
+#customer h3{
+   float: right;
+   color: red;     
+}

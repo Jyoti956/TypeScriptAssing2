@@ -1,0 +1,21 @@
+div h2{
+    margin-left: 40%;
+}
+#cartDiv{
+    width: 30%;
+    height:100px;
+    border: 1px solid blue;
+    margin-left: 35%;
+    align-items: center;
+}
+#cartDiv h3{
+   margin-left: 0%;
+}
+#cartDiv button{
+    float: right;
+    color: blue;
+    border-radius: 10px;
+}
+#usercartlist{
+    margin-top: 10px;
+}

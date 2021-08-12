@@ -1,1 +1,1 @@
-export * from './UserRoles.enum'
+export * from './AllEnums.enum'

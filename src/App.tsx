@@ -6,7 +6,8 @@ import Login from './components/loginpage/LoginPage';
 import Company from './components/company/Company';
 import Customer from './components/customer/Customer';
 import Admin from './components/admin/Admin';
-function App() {
+import UserCartList from './components/usercartlist/UserCartList';
+function App(props:any) {
 
   return (
     <BrowserRouter>
@@ -14,6 +15,7 @@ function App() {
         <Route path="/company" exact component={Company} />
         <Route path="/admin" exact component={Admin} />
         <Route path="/customer" exact component={Customer} />
+        <Route path="/usercartlist" exact component={UserCartList}/>
         <Route path="/*" exact component={Login} />
       </Switch>
     </BrowserRouter>

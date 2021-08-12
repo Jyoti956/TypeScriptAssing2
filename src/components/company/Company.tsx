@@ -1,106 +1,95 @@
 import React, { useState, useEffect } from 'react'
 import './company.css'
-import { CustomAgGrid } from '../../Shared/AgGridReact';
+import { Product_Status } from '../../Enums/AllEnums.enum'
 
 export interface IProduct {
     name: string;
     price: string;
     id: string;
-    approved: boolean;
-    status: "approved" | "pending" | "rejected";
+    status: string;
 }
 
 export default function Company() {
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [id, setId] = useState("");
-    const [items, setItems] = useState(
-        JSON.parse(localStorage.getItem('newItems') ||
-            '{}') || [] as IProduct[]);
-    const [itemStatus, setItemStatus] = useState(null)
 
-    // useEffect(() => {
-    //     const localData = JSON.parse(localStorage.getItem('newItems') || "{}");
-    //     if (localData) {
-    //        setItems(localData)
-    //     }
-    // }, []);
+    const [product, setProduct] = useState({} as IProduct);
+    const [items, setItems] = useState([] as IProduct[]);
+    const [color,setColor]=useState("blue")
+
+    useEffect(() => {
+        const localData = JSON.parse(localStorage.getItem('newItems') || "{}");
+        if (localData) {
+            setItems(localData);
+        }
+    }, []);
+
 
     const addItems = () => {
-        items.push({ name, price, id, approved: false, status: 'pending' });
+        items.push({ ...product, status: Product_Status.PENDING });
         setItems([...items]);
-        console.log(items, "items are");
         localStorage.setItem("newItems", JSON.stringify(items));
-        setName("");
-        setPrice("");
-        setId("");
+        updateProduct({ name: '', price: '', id: '' });
     };
 
-    const gridOptions = {
-        columnDefs: [
-            {
-                headerName: "Name",
-                field: "name"
-            },
-            {
-                headerName: "Price",
-                field: "price"
-            },
-            {
-                headerName: "Id",
-                field: "id"
-            },
-            {
-                headerName: "Status",
-                field: "status"
-            },
-        ],
-        defaultColDef: {
-            sortable: true,
-            editable: true,
-            filter: true,
-            floatingFilter: true,
-            flex: 1
-        }
-    };
+    const updateProduct = (_product: Partial<IProduct>): void => {
+        setProduct({ ...product, ..._product });
+    }
 
+    const renderRow = (item: any, i: number) => {
+        return (
+            <tr key={i}>
+                <td>{item.name}</td>
+                <td>{item.price}</td>
+                <td>{item.id}</td>
+                <td style={{color:color}}>{item.status}</td>
+            </tr>
+        )
+    }
 
     return (
         <div id="company">
             <h1>Company Dashboard</h1>
             <h3>Add Products:</h3>
             <div id="company_inputs">
-
                 Product Name:
                 <input type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
+                    value={product.name || ""}
+                    onChange={(e) => updateProduct({ name: e.target.value || "" })}
                 >
                 </input>
-
                 Product Price:
                 <input type="text"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
+                    value={product.price || ""}
+                    onChange={(e) => updateProduct({ price: e.target.value || "" })}
                 >
                 </input>
-
                 Product Id:
                 <input type="number"
-                    value={id}
-                    onChange={(e) => setId(e.target.value)}
+                    value={product.id || ""}
+                    onChange={(e) => updateProduct({ id: e.target.value || "" })}
                 >
                 </input>
-
-                <button type="button" onClick={addItems} id="addbtn">Add Product</button>
+                <button
+                    type="button"
+                    onClick={addItems}
+                    id="addbtn">
+                    Add Product
+                </button>
             </div>
-
-            <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
-                <CustomAgGrid
-                    rowData={items}
-                    gridOptions={gridOptions} />
+            <div>
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Id</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {items.map((item: any, i) => renderRow(item, i))}
+                    </tbody>
+                </table>
             </div>
-
         </div>
     )
 };

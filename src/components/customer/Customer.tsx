@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -11,31 +11,35 @@ import '../customer/customer.css';
 import Navbar from '../../navbar/Navbar';
 
 
+
 function Customer() {
   const classes = useStyles();
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([] as any);
+  const [count,setCount]=useState(JSON.parse(localStorage.getItem("cartItems") || '{}').length);
+  const [products,setProducts]=useState([] as any);
 
-  const allProducts = JSON.parse(localStorage.getItem("approvedItems") || '{}');
-  console.log(allProducts, "Approved by admin....");
-  const productsToShow = allProducts.filter((item: any) => item !== null);
-  console.log(productsToShow, "customer page final products");
-  localStorage.setItem("productsToShow", JSON.stringify(productsToShow))
-
-
-  const addToCart = (product: any) => {
-    const result = allProducts.find((item: any) => item.id === product.id)
-    console.log(result);
-    if (result) {
-      setCartItems(result);
-      console.log(cartItems, "cartItems are")
-    }
+  useEffect(()=>{
+    const newItems = JSON.parse(localStorage.getItem("newItems") || '{}');
+    const approvedItems=newItems.filter((items:any)=>items.status==="APPROVED");
+    if(approvedItems){
+        setProducts(approvedItems);
+      }
+  },[])
+  
+const addToCart = (product: any) => {
+    const result = products.find((item: any) => item.id === product.id)
+    cartItems.push(result);
+    setCartItems([...cartItems])
+    console.log(cartItems,"cartItems");
+    localStorage.setItem("cartItems",JSON.stringify(cartItems));
+    setCount(cartItems.length);
   }
 
   return (
     <div id="customer">
-      <Navbar />
+      <Navbar count={count}/>
       <div id="products">
-        {productsToShow.map((product: any) => {
+        {products.map((product: any) => {
           return <Card className={classes.root} key={product.id}>
             <CardActionArea>
 
@@ -55,7 +59,7 @@ function Customer() {
                   variant="body2"
                   color="textSecondary"
                   component="h4">
-                  ${product.price}
+                  Rs-{product.price}
                 </Typography>
               </CardContent>
             </CardActionArea>

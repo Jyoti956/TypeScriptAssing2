@@ -8,3 +8,14 @@
     margin: 5px;
     color: red;
 }
+#table{
+    width: 95%;
+    margin: 20px;
+}
+#table,th,tr,td{
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+    font-size: 20px;
+    text-align: center;
+}

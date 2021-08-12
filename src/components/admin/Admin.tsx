@@ -1,87 +1,72 @@
 import React, { useState, useEffect } from 'react'
 import './admin.css'
-import { CustomAgGrid } from '../../Shared/AgGridReact';
-import BtnCellRenderer from './BtnCellRenderer';
-import { RowNode } from 'ag-grid-community';
+import { Product_Status } from '../../Enums/AllEnums.enum'
 
-export interface AProps {
-    clicked: Function;
-    value: number;
-}
+export default function Admin() {
+    const [newProducts, setNewProducts] = useState(JSON.parse(localStorage.getItem("newItems") || '{}') || []);
+    const [data, setData] = useState([] as any);
 
-export default function Admin(props: AProps) {
-    const [data, setData] = useState([]);
-    const [approvedItems, setApprovedItems] = useState([] as any);
-    let gridApi: any = null;
 
     useEffect(() => {
-        const newItems = JSON.parse(localStorage.getItem("newItems") || '{}');
-        if (newItems) {
-            return setData(newItems)
+        const pendingProducts = newProducts.filter((items: any) => items.status === "PENDING");
+        if (pendingProducts) {
+            setData(pendingProducts);
         }
-        return alert("New products are not added yet!!");
-    }, []);
+    }, [])
 
-    const gridOptions = {
-        onGridReady: (params: any) => {
-            gridApi = params.api
-            console.log(gridApi, "&&&&&&&&&&&&&")
-        },
+    const approvel = (item: HTMLButtonElement): void => {
+        const approved = data.find((product: any) => product.id === item.id);
+        approved.status = Product_Status.APPROVED;
+        console.log(newProducts, "approvel button");
+        localStorage.setItem("newItems", JSON.stringify(newProducts));
+        setData(data.filter((rows: any) => rows !== approved));
+    }
 
-        columnDefs: [
-            {
-                headerName: "Name",
-                field: "name"
-            },
-            {
-                headerName: "Price",
-                field: "price"
-            },
-            {
-                headerName: "Actions",
-                field: "id",
-                cellRenderer: 'btnCellRenderer',
-                cellRendererParams: {
-                    clicked: function (field: RowNode) {
-                        const value = field;
-                        alert("Do you really want to approve item number: " + value);
-                    }
-                }
-            },
-        ],
+    const rejection = (item: HTMLButtonElement): void => {
+        const rejected = data.find((product: any) => product.id === item.id);
+        rejected.status = Product_Status.REJECTED;
+        console.log(newProducts, "rejection button");
+        localStorage.setItem("newItems", JSON.stringify(newProducts));
+        setData(data.filter((rows: any) => rows !== rejected));
+    }
 
-        frameworkComponents: {
-            btnCellRenderer: BtnCellRenderer
-        },
-
-        defaultColDef: {
-            sortable: true,
-            editable: true,
-            filter: true,
-            flex: 1
-        },
-
-        onCellClicked: (event: any) => console.log("current Rowindex is...", event.rowIndex),
-        rowSelection: 'single',
-        onSelectionChanged: approved,
-    };
-
-    function approved() {
-        const selRows = gridApi.getSelectedRows();
-        console.log(selRows[0], "selected row data...");
-        approvedItems.push(selRows[0]);
-        setApprovedItems(approvedItems)
-        localStorage.setItem("approvedItems", JSON.stringify(approvedItems))
-        gridApi.applyTransaction({ remove: selRows });
+    const renderRow = (rowItem: any, index: number) => {
+        return (
+            <tr key={index}>
+                <td>{rowItem.name}</td>
+                <td>{rowItem.price}</td>
+                <td>
+                    <button
+                        onClick={() => approvel(rowItem)}
+                        className="btn btn-primary">
+                        Approve
+                    </button>
+                    <button
+                        onClick={() => rejection(rowItem)}
+                        className="btn btn-primary">
+                        Reject
+                </button>
+                </td>
+            </tr>
+        )
     }
 
     return (
         <div id="admin">
             <h1>Admin Dashboard</h1>
-            <div className="ag-theme-alpine" style={{ height: 600, width: "100%" }}>
-                <CustomAgGrid
-                    rowData={data}
-                    gridOptions={gridOptions} />
+            <div>
+                <table id="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {data.map((item: any, index: number) => renderRow(item, index))}
+                    </tbody>
+                </table>
             </div>
         </div>
     );
